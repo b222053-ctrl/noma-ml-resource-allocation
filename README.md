@@ -1,4 +1,4 @@
-# NOMA ML Resource Allocation
+<img width="1026" height="559" alt="Screenshot 2025-12-17 at 11 57 41 AM" src="https://github.com/user-attachments/assets/1a03fb74-232b-449b-a679-abebdbf65882" /># NOMA ML Resource Allocation
 
 [![Python](https://img.shields.io/badge/Python-3.6%2B-blue.svg)](https://www.python.org/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
@@ -28,7 +28,9 @@ This project implements machine learning algorithms for optimizing resource allo
 The system compares traditional optimization methods (like water-filling algorithm) with ML-based approaches to demonstrate the potential of machine learning in wireless network optimization.
 
 ## 🏗️ Architecture
-![Uploading Screenshot 2025-12-17 at 11.57.41 AM.png…]()
+<img width="1026" height="559" alt="Screenshot 2025-12-17 at 11 57 41 AM" src="https://github.com/user-attachments/assets/1089e063-0800-4ec4-aeac-789a151e91f0" />
+
+
 
 
 ### System Architecture
