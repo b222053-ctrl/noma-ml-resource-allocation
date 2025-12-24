@@ -28,6 +28,8 @@ This project implements machine learning algorithms for optimizing resource allo
 The system compares traditional optimization methods (like water-filling algorithm) with ML-based approaches to demonstrate the potential of machine learning in wireless network optimization.
 
 ## 🏗️ Architecture
+![Uploading Screenshot 2025-12-17 at 11.57.41 AM.png…]()
+
 
 ### System Architecture
 
