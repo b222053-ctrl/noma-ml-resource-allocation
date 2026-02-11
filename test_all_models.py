@@ -1,93 +1,120 @@
 import time
-from sklearn import svm, ensemble, tree
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score, classification_report
 import numpy as np
-
-# Simulate NOMA Simulator (Placeholder for actual implementation)
-def run_noma_simulator():
-    print("Running NOMA Simulator...")
-    # Placeholder for actual simulation code
-    time.sleep(1)  # Simulate time taken
-    results = {"accuracy": 0.95}
-    return results
+from src.ml_models import SVMAllocator, RandomForestAllocator, DecisionTreeAllocator, GradientDescentAllocator
+from src.noma_simulator import NOMASimulator
 
 # SVM Model Testing
 def run_svm(X_train, X_test, y_train, y_test):
-    model = svm.SVC()
-    model.fit(X_train, y_train)
-    predictions = model.predict(X_test)
-    accuracy = accuracy_score(y_test, predictions)
-    print("SVM Model Accuracy:", accuracy)
-    return accuracy
+    print("\n" + "="*50)
+    print("Testing SVM Allocator")
+    print("="*50)
+    start_time = time.time()
+    
+    model = SVMAllocator()
+    model.train(X_train, y_train)
+    metrics = model.evaluate(X_test, y_test)
+    
+    print(f"SVM Model MSE: {metrics['mse']:.6f}")
+    print(f"SVM Model MAE: {metrics['mae']:.6f}")
+    print(f"SVM Execution Time: {time.time() - start_time:.4f} seconds")
+    
+    return metrics
 
 # Random Forest Model Testing
 def run_random_forest(X_train, X_test, y_train, y_test):
-    model = ensemble.RandomForestClassifier()
-    model.fit(X_train, y_train)
-    predictions = model.predict(X_test)
-    accuracy = accuracy_score(y_test, predictions)
-    print("Random Forest Model Accuracy:", accuracy)
-    return accuracy
+    print("\n" + "="*50)
+    print("Testing Random Forest Allocator")
+    print("="*50)
+    start_time = time.time()
+    
+    model = RandomForestAllocator(n_estimators=100)
+    model.train(X_train, y_train)
+    metrics = model.evaluate(X_test, y_test)
+    
+    print(f"Random Forest Model MSE: {metrics['mse']:.6f}")
+    print(f"Random Forest Model MAE: {metrics['mae']:.6f}")
+    print(f"Random Forest Execution Time: {time.time() - start_time:.4f} seconds")
+    
+    return metrics
 
 # Decision Tree Model Testing
 def run_decision_tree(X_train, X_test, y_train, y_test):
-    model = tree.DecisionTreeClassifier()
-    model.fit(X_train, y_train)
-    predictions = model.predict(X_test)
-    accuracy = accuracy_score(y_test, predictions)
-    print("Decision Tree Model Accuracy:", accuracy)
-    return accuracy
+    print("\n" + "="*50)
+    print("Testing Decision Tree Allocator")
+    print("="*50)
+    start_time = time.time()
+    
+    model = DecisionTreeAllocator(max_depth=10)
+    model.train(X_train, y_train)
+    metrics = model.evaluate(X_test, y_test)
+    
+    print(f"Decision Tree Model MSE: {metrics['mse']:.6f}")
+    print(f"Decision Tree Model MAE: {metrics['mae']:.6f}")
+    print(f"Decision Tree Execution Time: {time.time() - start_time:.4f} seconds")
+    
+    return metrics
 
-# Gradient Descent Model Testing (Placeholder)
-def run_gradient_descent(X_train, y_train):
-    print("Running Gradient Descent...")
-    # Placeholder for actual gradient descent implementation
-    time.sleep(1)  # Simulate time taken
-    results = {"accuracy": 0.90}
-    print("Gradient Descent Model Accuracy:", results["accuracy"])
-    return results["accuracy"]
+# Gradient Descent Model Testing
+def run_gradient_descent(X_train, X_test, y_train, y_test):
+    print("\n" + "="*50)
+    print("Testing Gradient Descent Allocator")
+    print("="*50)
+    start_time = time.time()
+    
+    model = GradientDescentAllocator(learning_rate=0.01, max_iterations=1000)
+    model.train(X_train, y_train)
+    metrics = model.evaluate(X_test, y_test)
+    
+    print(f"Gradient Descent Model MSE: {metrics['mse']:.6f}")
+    print(f"Gradient Descent Model MAE: {metrics['mae']:.6f}")
+    print(f"Gradient Descent Execution Time: {time.time() - start_time:.4f} seconds")
+    print(f"Number of iterations: {len(model.get_loss_history())}")
+    
+    return metrics
 
 # Main testing function
 def main():
-    # Dummy data generation for testing
-    X = np.random.rand(100, 10)
-    y = np.random.randint(0, 2, size=100)
+    print("="*50)
+    print("NOMA Resource Allocation - ML Models Testing")
+    print("="*50)
     
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    # Generate realistic NOMA training data
+    print("\nGenerating NOMA training data...")
+    simulator = NOMASimulator(num_users=4, num_channels=2)
+    X_train, y_train = simulator.generate_training_data(num_samples=1000)
+    X_test, y_test = simulator.generate_training_data(num_samples=200)
+    
+    print(f"Training data shape: X={X_train.shape}, y={y_train.shape}")
+    print(f"Test data shape: X={X_test.shape}, y={y_test.shape}")
 
-    # Testing NOMA Simulator
-    start_time = time.time()
-    noma_results = run_noma_simulator()
-    print("NOMA Simulator Results:", noma_results)
-    print("NOMA Simulator Execution Time:", time.time() - start_time)
-
-    # Testing SVM
-    start_time = time.time()
-    svm_accuracy = run_svm(X_train, X_test, y_train, y_test)
-    print("SVM Execution Time:", time.time() - start_time)
-
-    # Testing Random Forest
-    start_time = time.time()
-    rf_accuracy = run_random_forest(X_train, X_test, y_train, y_test)
-    print("Random Forest Execution Time:", time.time() - start_time)
-
-    # Testing Decision Tree
-    start_time = time.time()
-    dt_accuracy = run_decision_tree(X_train, X_test, y_train, y_test)
-    print("Decision Tree Execution Time:", time.time() - start_time)
-
-    # Testing Gradient Descent
-    start_time = time.time()
-    gd_accuracy = run_gradient_descent(X_train, y_train)
-    print("Gradient Descent Execution Time:", time.time() - start_time)
+    # Testing all models
+    svm_metrics = run_svm(X_train, X_test, y_train, y_test)
+    rf_metrics = run_random_forest(X_train, X_test, y_train, y_test)
+    dt_metrics = run_decision_tree(X_train, X_test, y_train, y_test)
+    gd_metrics = run_gradient_descent(X_train, X_test, y_train, y_test)
 
     # Summary of Results
-    print("\nPerformance Comparison:")
-    print(f"SVM Accuracy: {svm_accuracy}")
-    print(f"Random Forest Accuracy: {rf_accuracy}")
-    print(f"Decision Tree Accuracy: {dt_accuracy}")
-    print(f"Gradient Descent Accuracy: {gd_accuracy}")
+    print("\n" + "="*50)
+    print("Performance Comparison Summary")
+    print("="*50)
+    print(f"{'Model':<25} {'MSE':<15} {'MAE':<15}")
+    print("-"*50)
+    print(f"{'SVM':<25} {svm_metrics['mse']:<15.6f} {svm_metrics['mae']:<15.6f}")
+    print(f"{'Random Forest':<25} {rf_metrics['mse']:<15.6f} {rf_metrics['mae']:<15.6f}")
+    print(f"{'Decision Tree':<25} {dt_metrics['mse']:<15.6f} {dt_metrics['mae']:<15.6f}")
+    print(f"{'Gradient Descent':<25} {gd_metrics['mse']:<15.6f} {gd_metrics['mae']:<15.6f}")
+    print("="*50)
+    
+    # Determine best model
+    models = {
+        'SVM': svm_metrics['mse'],
+        'Random Forest': rf_metrics['mse'],
+        'Decision Tree': dt_metrics['mse'],
+        'Gradient Descent': gd_metrics['mse']
+    }
+    best_model = min(models, key=models.get)
+    print(f"\nBest performing model (lowest MSE): {best_model}")
+    print("="*50)
 
 if __name__ == "__main__":
     main()

@@ -5,7 +5,7 @@ from sklearn.preprocessing import StandardScaler
 
 class SVMAllocator:
     def __init__(self):
-        self.model = MultiOutputRegressor(SVR(random_state=42))
+        self.model = MultiOutputRegressor(SVR())
         self.scaler = StandardScaler()
 
     def train(self, X_train, y_train):
