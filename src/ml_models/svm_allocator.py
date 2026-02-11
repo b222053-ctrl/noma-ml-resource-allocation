@@ -1,10 +1,11 @@
 import numpy as np
 from sklearn.svm import SVR
+from sklearn.multioutput import MultiOutputRegressor
 from sklearn.preprocessing import StandardScaler
 
 class SVMAllocator:
     def __init__(self):
-        self.model = SVR()
+        self.model = MultiOutputRegressor(SVR(random_state=42))
         self.scaler = StandardScaler()
 
     def train(self, X_train, y_train):
@@ -13,9 +14,11 @@ class SVMAllocator:
 
     def predict(self, X_test):
         X_test_scaled = self.scaler.transform(X_test)
-        return self.model.predict(X_test_scaled)
+        predictions = self.model.predict(X_test_scaled)
+        return np.maximum(predictions, 0)
 
     def evaluate(self, X_test, y_test):
         predictions = self.predict(X_test)
         mse = np.mean((predictions - y_test) ** 2)
-        return mse
+        mae = np.mean(np.abs(predictions - y_test))
+        return {'mse': mse, 'mae': mae}

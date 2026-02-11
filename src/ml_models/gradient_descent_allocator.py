@@ -11,15 +11,23 @@ class GradientDescentAllocator:
 
     def train(self, X_train, y_train):
         m, n = X_train.shape
-        self.weights = np.zeros(n)
-        self.bias = 0
+        # Handle multi-output regression
+        if len(y_train.shape) == 1:
+            num_outputs = 1
+            y_train = y_train.reshape(-1, 1)
+        else:
+            num_outputs = y_train.shape[1]
+        
+        self.weights = np.zeros((n, num_outputs))
+        self.bias = np.zeros(num_outputs)
         self.loss_history = []
+        
         for iteration in range(self.max_iterations):
             y_pred = X_train.dot(self.weights) + self.bias
             loss = (1/(2*m)) * np.sum((y_pred - y_train)**2)
             self.loss_history.append(loss)
             dw = (1/m) * X_train.T.dot(y_pred - y_train)
-            db = (1/m) * np.sum(y_pred - y_train)
+            db = (1/m) * np.sum(y_pred - y_train, axis=0)
             self.weights -= self.learning_rate * dw
             self.bias -= self.learning_rate * db
             if iteration > 0 and abs(self.loss_history[-1] - self.loss_history[-2]) < self.tolerance:

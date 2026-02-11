@@ -4,7 +4,7 @@ from sklearn.preprocessing import StandardScaler
 
 class DecisionTreeAllocator:
     def __init__(self, max_depth=10):
-        self.model = DecisionTreeRegressor(max_depth=max_depth)
+        self.model = DecisionTreeRegressor(max_depth=max_depth, random_state=42)
         self.scaler = StandardScaler()
 
     def train(self, X_train, y_train):
