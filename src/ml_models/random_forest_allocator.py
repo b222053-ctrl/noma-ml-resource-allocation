@@ -4,7 +4,7 @@ from sklearn.preprocessing import StandardScaler
 
 class RandomForestAllocator:
     def __init__(self, n_estimators=100):
-        self.model = RandomForestRegressor(n_estimators=n_estimators)
+        self.model = RandomForestRegressor(n_estimators=n_estimators, random_state=42)
         self.scaler = StandardScaler()
 
     def train(self, X_train, y_train):
