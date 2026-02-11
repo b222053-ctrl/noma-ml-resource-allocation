@@ -11,7 +11,8 @@ class GradientDescentAllocator:
 
     def train(self, X_train, y_train):
         m, n = X_train.shape
-        # Handle multi-output regression
+        # Handle multi-output regression (backwards compatible with single-output)
+        # If y_train is 1D, reshape to 2D for consistent handling
         if len(y_train.shape) == 1:
             num_outputs = 1
             y_train = y_train.reshape(-1, 1)
@@ -27,6 +28,7 @@ class GradientDescentAllocator:
             loss = (1/(2*m)) * np.sum((y_pred - y_train)**2)
             self.loss_history.append(loss)
             dw = (1/m) * X_train.T.dot(y_pred - y_train)
+            # axis=0 sums across samples for multi-output, giving gradient per output
             db = (1/m) * np.sum(y_pred - y_train, axis=0)
             self.weights -= self.learning_rate * dw
             self.bias -= self.learning_rate * db
